@@ -1,0 +1,11 @@
+.wrapper {
+    width: 600px;
+}
+.scrollable {
+    height: calc(100vh - 148px);
+    overflow-y: auto;
+}
+
+.tabs {
+    display: flex;
+}

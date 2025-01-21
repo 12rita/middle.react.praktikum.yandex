@@ -1,0 +1,23 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 16px;
+    width: 272px;
+    height: 208px;
+    gap:8px;
+    cursor: pointer;
+    position: relative;
+}
+.card:hover {
+    background-color: var(--background-element);
+    border-radius: 8px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
