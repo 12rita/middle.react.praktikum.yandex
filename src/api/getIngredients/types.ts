@@ -1,6 +1,6 @@
 export type EType = "sauce" | "bun" | "main";
 
-export interface IIngredients {
+export interface IIngredient {
   calories: number;
   carbohydrates: number;
   fat: number;
@@ -16,16 +16,18 @@ export interface IIngredients {
 }
 
 export interface IIngredientsResponse {
-  data: IIngredients[];
+  data: IIngredient[];
   success: boolean;
 }
 export type TIngredientType = "buns" | "mains" | "sauces";
 
 export type TFilteredIngredients = {
-  [key in TIngredientType]: IIngredients[];
+  [key in TIngredientType]: IIngredient[];
 };
 
 export type TUseGetIngredientsResult = {
   ingredients: TFilteredIngredients;
   isLoading: boolean;
+  isError: boolean;
+  error: string;
 };

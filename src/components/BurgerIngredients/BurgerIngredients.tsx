@@ -1,9 +1,9 @@
-import { TIngredientType } from "../../api";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, useState } from "react";
 import { Section } from "./components";
 import styles from "./styles.module.css";
 import { IBurgerIngredientsProps, ITabs } from "./types.ts";
+import { TIngredientType } from "@api/getIngredients";
 
 const tabs: ITabs[] = [
   { id: "buns", label: "Булки" },
@@ -28,6 +28,7 @@ export const BurgerIngredients: FC<IBurgerIngredientsProps> = ({
       <div className={styles.tabs}>
         {tabs.map(({ id, label }) => (
           <Tab
+            key={id}
             value={id}
             active={current === id}
             onClick={() => {

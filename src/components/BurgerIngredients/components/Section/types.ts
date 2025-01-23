@@ -1,10 +1,10 @@
-import { IIngredients, TIngredientType } from "../../../../api";
 import { Dispatch, SetStateAction } from "react";
+import { IIngredient, TIngredientType } from "@api/getIngredients";
 
 export interface ISectionProps {
-  items: IIngredients[];
+  items: IIngredient[];
   title: string;
   sectionId: TIngredientType;
-  selected: IIngredients[];
-  setSelected: Dispatch<SetStateAction<IIngredients[]>>;
+  selected: IIngredient[];
+  setSelected: Dispatch<SetStateAction<IIngredient[]>>;
 }

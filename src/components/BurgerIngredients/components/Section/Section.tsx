@@ -3,7 +3,7 @@ import { ISectionProps } from "./types.ts";
 import styles from "./styles.module.css";
 import cn from "clsx";
 import { Card } from "../Card";
-import { IIngredients } from "../../../../api";
+import { IIngredient } from "@api/getIngredients";
 
 export const Section: FC<ISectionProps> = ({
   items,
@@ -12,7 +12,7 @@ export const Section: FC<ISectionProps> = ({
   selected,
   setSelected,
 }) => {
-  const handleToggleIngredients = (item: IIngredients) => {
+  const handleToggleIngredients = (item: IIngredient) => {
     const newState = structuredClone(selected);
 
     if (sectionId === "buns") {
@@ -31,7 +31,7 @@ export const Section: FC<ISectionProps> = ({
         newState.push(item);
       }
     } else {
-      if (newState[newState.length - 1].type === "bun")
+      if (newState.length && newState[newState.length - 1].type === "bun")
         newState.splice(newState.length - 1, 0, item);
       else newState.push(item);
     }

@@ -1,5 +1,9 @@
-import { IIngredients, TFilteredIngredients, TIngredientType } from "../../api";
 import { Dispatch, SetStateAction } from "react";
+import {
+  IIngredient,
+  TFilteredIngredients,
+  TIngredientType,
+} from "@api/getIngredients";
 
 export interface ITabs {
   id: TIngredientType;
@@ -8,6 +12,6 @@ export interface ITabs {
 
 export interface IBurgerIngredientsProps {
   ingredients: TFilteredIngredients;
-  selected: IIngredients[];
-  setSelected: Dispatch<SetStateAction<IIngredients[]>>;
+  selected: IIngredient[];
+  setSelected: Dispatch<SetStateAction<IIngredient[]>>;
 }
