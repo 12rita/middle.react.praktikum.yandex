@@ -62,12 +62,11 @@ export const BurgerIngredients: FC<IBurgerIngredientsProps> = ({
           />
         ))}
       </div>
-      <Modal
-        isOpen={!!Object.keys(selectedItem).length}
-        onClose={handleCloseIngredientDetails}
-      >
-        <IngredientDetails item={selectedItem} />
-      </Modal>
+      {!!Object.keys(selectedItem).length && (
+        <Modal onClose={handleCloseIngredientDetails}>
+          <IngredientDetails item={selectedItem} />
+        </Modal>
+      )}
     </section>
   );
 };

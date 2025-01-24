@@ -3,6 +3,7 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
+  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import { FC, useMemo, useState } from "react";
@@ -41,18 +42,29 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({
           const isLocked = type === "bun";
           const listType =
             type === "bun" ? (idx === 0 ? "top" : "bottom") : undefined;
+          const text =
+            name +
+            " " +
+            (listType ? (listType === "top" ? "(верх)" : "(низ)") : "");
           return (
-            <ConstructorElement
-              key={name + idx}
-              text={name}
-              thumbnail={image_mobile}
-              price={price}
-              isLocked={isLocked}
-              type={listType}
-              handleClose={() => {
-                handleDelete(idx);
-              }}
-            />
+            <div className={styles.list_el}>
+              {listType ? (
+                <div className={styles.spacer} />
+              ) : (
+                <DragIcon type="primary" className={styles.dragIcon} />
+              )}
+              <ConstructorElement
+                key={name + idx}
+                text={text}
+                thumbnail={image_mobile}
+                price={price}
+                isLocked={isLocked}
+                type={listType}
+                handleClose={() => {
+                  handleDelete(idx);
+                }}
+              />
+            </div>
           );
         })}
       </div>
@@ -65,9 +77,11 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({
           </Button>
         </div>
       )}
-      <Modal isOpen={isOpen} onClose={handleCloseOrderDetails}>
-        <OrderDetails />
-      </Modal>
+      {isOpen && (
+        <Modal onClose={handleCloseOrderDetails}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
 };
