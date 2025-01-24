@@ -3,7 +3,9 @@ import { FC, useState } from "react";
 import { Section } from "./components";
 import styles from "./styles.module.css";
 import { IBurgerIngredientsProps, ITabs } from "./types.ts";
-import { TIngredientType } from "@api/getIngredients";
+import { IIngredient, TIngredientType } from "@api/getIngredients";
+import { Modal } from "@components/Modal";
+import { IngredientDetails } from "@components/BurgerIngredients/components/IngredientDetails";
 
 const tabs: ITabs[] = [
   { id: "buns", label: "Булки" },
@@ -17,12 +19,20 @@ export const BurgerIngredients: FC<IBurgerIngredientsProps> = ({
   setSelected,
 }) => {
   const [current, setCurrent] = useState("buns");
-
+  const [selectedItem, setSelectedItem] = useState<IIngredient>(
+    {} as IIngredient,
+  );
   const handleTabClick = (id: TIngredientType) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setCurrent(id);
   };
+  const handleOpenModal = (item: IIngredient) => {
+    setSelectedItem(item);
+  };
 
+  const handleCloseIngredientDetails = () => {
+    setSelectedItem({} as IIngredient);
+  };
   return (
     <section className={styles.wrapper}>
       <div className={styles.tabs}>
@@ -42,6 +52,7 @@ export const BurgerIngredients: FC<IBurgerIngredientsProps> = ({
       <div className={styles.scrollable}>
         {tabs.map(({ id, label }) => (
           <Section
+            onClick={handleOpenModal}
             key={id}
             items={ingredients[id]}
             title={label}
@@ -51,6 +62,12 @@ export const BurgerIngredients: FC<IBurgerIngredientsProps> = ({
           />
         ))}
       </div>
+      <Modal
+        isOpen={!!Object.keys(selectedItem).length}
+        onClose={handleCloseIngredientDetails}
+      >
+        <IngredientDetails item={selectedItem} />
+      </Modal>
     </section>
   );
 };

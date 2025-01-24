@@ -11,6 +11,7 @@ export const Section: FC<ISectionProps> = ({
   sectionId,
   selected,
   setSelected,
+  onClick,
 }) => {
   const handleToggleIngredients = (item: IIngredient) => {
     const newState = structuredClone(selected);
@@ -55,16 +56,23 @@ export const Section: FC<ISectionProps> = ({
           ).length;
           if (type === "bun") counter = counter / 2;
           return (
-            <Card
+            <div
               key={_id}
-              name={name}
-              price={price}
-              image={image}
-              counter={counter}
-              onClick={() => {
-                handleToggleIngredients(item);
+              onContextMenu={(e) => {
+                e.preventDefault();
+                onClick(item);
               }}
-            />
+            >
+              <Card
+                name={name}
+                price={price}
+                image={image}
+                counter={counter}
+                onClick={() => {
+                  handleToggleIngredients(item);
+                }}
+              />
+            </div>
           );
         })}
       </div>

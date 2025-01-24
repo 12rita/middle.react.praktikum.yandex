@@ -7,4 +7,5 @@ export interface ISectionProps {
   sectionId: TIngredientType;
   selected: IIngredient[];
   setSelected: Dispatch<SetStateAction<IIngredient[]>>;
+  onClick: (item: IIngredient) => void;
 }

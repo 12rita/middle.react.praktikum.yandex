@@ -30,7 +30,7 @@ export const IngredientDetails: FC<{ item: IIngredient }> = ({ item }) => {
         )}
       >
         {categoryOrder.map(({ id, unit, title }) => (
-          <div className={styles.category}>
+          <div className={styles.category} key={id}>
             <p>{title + "," + unit}</p>
             <p>{item[id]}</p>
           </div>
