@@ -1,0 +1,33 @@
+.wrapper {
+    background: var(--background);
+    height: 88px;
+    padding: 24px 320px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+.logo {
+    margin: 0 112px 0 288px;
+}
+
+.active {
+    color: var(--text-primary-color);
+}
+
+.profile {
+    margin-left: auto;
+}
+
+.mainTabs {
+    display: flex;
+    gap: 8px;
+}

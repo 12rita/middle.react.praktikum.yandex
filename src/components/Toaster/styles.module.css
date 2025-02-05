@@ -1,0 +1,15 @@
+@keyframes appearance {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+.toast {
+    background-color: var(--colors-interface-error);
+    border-radius: 8px;
+    border: 1px solid rgba(76, 76, 255, 0.2);
+    width: 150px;
+    padding: 16px;
+    position: fixed;
+    top: 100px;
+    right: 40px;
+}
+

@@ -1,0 +1,10 @@
+.section {
+    gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.title {
+    margin: 40px 0 24px;
+}
