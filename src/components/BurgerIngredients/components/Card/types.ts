@@ -1,7 +1,7 @@
+import { IIngredient } from "@/shared";
+
 export interface ICardProps {
-  name: string;
-  price: number;
-  image: string;
-  onClick: () => void;
+  item: IIngredient;
+  onClick: (item: IIngredient) => void;
   counter?: number;
 }

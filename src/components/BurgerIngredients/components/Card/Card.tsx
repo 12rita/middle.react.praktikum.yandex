@@ -6,16 +6,22 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import cn from "clsx";
+import { useDrag } from "react-dnd";
 
-export const Card: FC<ICardProps> = ({
-  price,
-  name,
-  image,
-  onClick,
-  counter,
-}) => {
+export const Card: FC<ICardProps> = ({ item, onClick, counter }) => {
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: { id: item._id },
+  });
+
+  const { name, image, price } = item;
+
+  const handleClick = () => {
+    onClick(item);
+  };
+
   return (
-    <div className={styles.card} onClick={onClick}>
+    <div className={styles.card} onClick={handleClick} ref={dragRef}>
       {!!counter && <Counter count={counter} />}
       <img alt={name} src={image} />
       <div className={cn(styles.price, "text_type_digits-default", "text")}>
