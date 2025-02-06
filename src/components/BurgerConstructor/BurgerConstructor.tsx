@@ -4,7 +4,6 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../Modal";
 import { OrderDetails } from "./components/OrderDetails";
 import { useAppDispatch, useAppSelector } from "@/services/ducks/store.ts";
@@ -38,7 +37,7 @@ export const BurgerConstructor: FC = () => {
       if (ingredient)
         dispatch(
           addIngredient({
-            item: { ...ingredient, key: uuidv4() },
+            item: ingredient,
             sectionId: ingredient.type,
           }),
         );

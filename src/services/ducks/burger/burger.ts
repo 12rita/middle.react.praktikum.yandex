@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EType } from "@/shared";
-import { IExtendedIngredient } from "@/services/ducks/burger/types.ts";
+import {
+  IActionPayload,
+  IExtendedActionPayload,
+  IExtendedIngredient,
+} from "@/services/ducks/burger/types.ts";
 import { v4 as uuidv4 } from "uuid";
 const initialState: IExtendedIngredient[] = [];
 
@@ -8,31 +11,36 @@ export const burgerSlice = createSlice({
   name: "burgerIngredients",
   initialState,
   reducers: {
-    addIngredient: (
-      state,
-      action: PayloadAction<{ item: IExtendedIngredient; sectionId: EType }>,
-    ) => {
-      const { sectionId, item } = action.payload;
-      if (sectionId === "bun") {
-        if (state.length && state[0].type === "bun") {
-          if (state[0]._id === item._id) {
-            state.shift();
-            state.pop();
+    addIngredient: {
+      reducer: (state, action: PayloadAction<IExtendedActionPayload>) => {
+        const { sectionId, item, key, additionalKey } = action.payload;
+        const keyedItem = { ...item, key };
+        if (sectionId === "bun") {
+          if (state.length && state[0].type === "bun") {
+            if (state[0]._id === item._id) {
+              state.shift();
+              state.pop();
+            } else {
+              state.shift();
+              state.pop();
+              state.unshift(keyedItem);
+              state.push({ ...item, key: additionalKey });
+            }
           } else {
-            state.shift();
-            state.pop();
-            state.unshift(item);
-            state.push({ ...item, key: uuidv4() });
+            state.unshift(keyedItem);
+            state.push({ ...item, key: additionalKey });
           }
         } else {
-          state.unshift(item);
-          state.push({ ...item, key: uuidv4() });
+          if (state.length && state[state.length - 1].type === "bun")
+            state.splice(state.length - 1, 0, keyedItem);
+          else state.push(keyedItem);
         }
-      } else {
-        if (state.length && state[state.length - 1].type === "bun")
-          state.splice(state.length - 1, 0, item);
-        else state.push(item);
-      }
+      },
+      prepare: (payload: IActionPayload) => {
+        return {
+          payload: { ...payload, key: uuidv4(), additionalKey: uuidv4() },
+        };
+      },
     },
     switchIngredients: (
       state,

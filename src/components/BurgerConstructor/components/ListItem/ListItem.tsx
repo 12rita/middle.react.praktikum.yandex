@@ -14,7 +14,7 @@ import { burgerSlice } from "@/services/ducks/burger";
 import { useDrag, useDrop } from "react-dnd";
 
 export const ListItem: FC<IListItemProps> = ({ item, idx }) => {
-  const { name, price, type, image_mobile, key } = item;
+  const { name, price, type, image_mobile } = item;
   const ref = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
@@ -49,11 +49,7 @@ export const ListItem: FC<IListItemProps> = ({ item, idx }) => {
   dragRef(dropTarget(ref));
 
   return (
-    <div
-      className={styles.list_el}
-      key={key}
-      ref={item.type !== "bun" ? ref : null}
-    >
+    <div className={styles.list_el} ref={item.type !== "bun" ? ref : null}>
       {listType ? (
         <div className={styles.spacer} />
       ) : (
