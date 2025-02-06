@@ -65,25 +65,31 @@ export class Api {
     const isFormData = data instanceof FormData;
     const body = data ? (isFormData ? data : JSON.stringify(data)) : null;
 
-    const response = await fetch(fullUrl, {
+    return await fetch(fullUrl, {
       headers,
       method,
       body,
       ...rest,
-    });
-
-    if (!response.ok) {
-      return { error: response.statusText };
-    }
-
-    let responseData;
-    try {
-      responseData = await response.json();
-    } catch (error) {
-      return { error: "Not a valid JSON" };
-    }
-
-    return responseData;
+    })
+      .then((res) => {
+        if (res.ok) {
+          let responseData;
+          try {
+            responseData = res.json();
+          } catch (error) {
+            return Promise.reject(`Not a valid JSON`);
+          }
+          return responseData;
+        }
+        return Promise.reject(`Ошибка ${res.status}`);
+      })
+      .then((res) => {
+        if (res && res.success) {
+          return res;
+        }
+        // не забываем выкидывать ошибку, чтобы она попала в `catch`
+        return Promise.reject(`Ответ не success: ${res}`);
+      });
   }
 }
 

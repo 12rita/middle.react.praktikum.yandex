@@ -1,8 +1,8 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC, useEffect, useState } from "react";
+import { FC, RefObject, useEffect, useRef, useState } from "react";
 import { Section } from "./components";
 import styles from "./styles.module.css";
-import { ITabs } from "./types.ts";
+import { ITabs, TTitleRefs } from "./types.ts";
 
 import { useAppDispatch, useAppSelector } from "@/services";
 
@@ -24,6 +24,11 @@ const TOP_OFFSET = 88 + 56;
 
 export const BurgerIngredients: FC = () => {
   const [current, setCurrent] = useState("bun");
+  const titleRefs = {} as TTitleRefs;
+  tabs.forEach((tab) => {
+    titleRefs[tab.id] = useRef<HTMLDivElement>(null);
+  });
+
   const {
     modal: { activeIngredient },
     ingredientsData: { loading, error, ingredients },
@@ -54,20 +59,26 @@ export const BurgerIngredients: FC = () => {
   };
 
   const handleTabClick = (id: EType) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    if (!titleRefs[id]) return;
+    (titleRefs[id] as RefObject<HTMLDivElement>).current?.scrollIntoView({
+      behavior: "smooth",
+    });
     setCurrent(id);
   };
 
   const handleScroll = () => {
-    const titles = document.querySelectorAll("[id^=sectionTitle]");
     let min = Infinity;
     let closestTab = current;
-    titles.forEach((title) => {
-      const offset = Math.abs(title.getBoundingClientRect().top - TOP_OFFSET);
 
-      if (offset < min) {
-        min = offset;
-        closestTab = title.id.substring(13);
+    Object.entries(titleRefs).forEach(([key, value]) => {
+      const title = (value as RefObject<HTMLDivElement>).current;
+      if (title) {
+        const offset = Math.abs(title.getBoundingClientRect().top - TOP_OFFSET);
+
+        if (offset < min) {
+          min = offset;
+          closestTab = key;
+        }
       }
     });
 
@@ -102,6 +113,7 @@ export const BurgerIngredients: FC = () => {
           <Section
             onClick={handleOpenModal}
             key={id}
+            ref={titleRefs[id]}
             items={ingredients[id]}
             title={label}
             sectionId={id}

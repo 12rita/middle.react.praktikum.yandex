@@ -1,7 +1,7 @@
-import { IIngredient } from "@/shared";
+import { IExtendedIngredient } from "@/services/ducks/burger";
 
 export interface IListItemProps {
-  item: IIngredient;
+  item: IExtendedIngredient;
   idx: number;
 }
 

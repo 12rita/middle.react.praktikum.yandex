@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IIngredient, EType } from "@/shared";
-
-const initialState: IIngredient[] = [];
+import { EType } from "@/shared";
+import { IExtendedIngredient } from "@/services/ducks/burger/types.ts";
+import { v4 as uuidv4 } from "uuid";
+const initialState: IExtendedIngredient[] = [];
 
 export const burgerSlice = createSlice({
   name: "burgerIngredients",
@@ -9,7 +10,7 @@ export const burgerSlice = createSlice({
   reducers: {
     addIngredient: (
       state,
-      action: PayloadAction<{ item: IIngredient; sectionId: EType }>,
+      action: PayloadAction<{ item: IExtendedIngredient; sectionId: EType }>,
     ) => {
       const { sectionId, item } = action.payload;
       if (sectionId === "bun") {
@@ -21,11 +22,11 @@ export const burgerSlice = createSlice({
             state.shift();
             state.pop();
             state.unshift(item);
-            state.push(item);
+            state.push({ ...item, key: uuidv4() });
           }
         } else {
           state.unshift(item);
-          state.push(item);
+          state.push({ ...item, key: uuidv4() });
         }
       } else {
         if (state.length && state[state.length - 1].type === "bun")

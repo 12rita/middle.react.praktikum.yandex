@@ -18,10 +18,8 @@ export const fetchIngredients = createAsyncThunk(
   "ingredients/get",
   async () => {
     const res = await api.get<IIngredientsResponse>(INGREDIENTS);
-    if ("error" in res) {
-      return res.error;
-    } else if (!res.success) return "Something is wrong(";
-    return res.data;
+
+    return "data" in res ? res.data : res.error;
   },
 );
 

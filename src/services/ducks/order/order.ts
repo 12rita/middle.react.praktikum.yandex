@@ -12,13 +12,9 @@ const initialState: IInitialState = {
 export const postOrderNumber = createAsyncThunk(
   "order/get",
   async (ids: string[]) => {
-    const res = await api.post<IOrdersResponse>(ORDER, {
+    return await api.post<IOrdersResponse>(ORDER, {
       data: { ingredients: ids },
     });
-    if ("error" in res) {
-      return res.error;
-    } else if (!res.success) return "Something is wrong(";
-    return res;
   },
 );
 

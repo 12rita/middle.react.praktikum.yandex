@@ -3,12 +3,10 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import { FC, useMemo, useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import { Modal } from "../Modal";
 import { OrderDetails } from "./components/OrderDetails";
-
 import { useAppDispatch, useAppSelector } from "@/services/ducks/store.ts";
 import { burgerSlice } from "@/services/ducks/burger";
 import { postOrderNumber } from "@/services/ducks/order";
@@ -39,7 +37,10 @@ export const BurgerConstructor: FC = () => {
       const ingredient = rawIngredients.find((item) => item._id === itemId.id);
       if (ingredient)
         dispatch(
-          addIngredient({ item: ingredient, sectionId: ingredient.type }),
+          addIngredient({
+            item: { ...ingredient, key: uuidv4() },
+            sectionId: ingredient.type,
+          }),
         );
     },
   });
@@ -59,7 +60,7 @@ export const BurgerConstructor: FC = () => {
     <section className={styles.wrapper} ref={dropTarget}>
       <div className={styles.list}>
         {burger.map((item, idx) => {
-          return <ListItem item={item} idx={idx} />;
+          return <ListItem key={item.key} item={item} idx={idx} />;
         })}
       </div>
       {!!burger.length && (
