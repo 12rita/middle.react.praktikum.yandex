@@ -1,17 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
-import {
-  IIngredient,
-  TFilteredIngredients,
-  TIngredientType,
-} from "@api/getIngredients";
+import { EType } from "@/shared";
+import { Ref } from "react";
 
 export interface ITabs {
-  id: TIngredientType;
+  id: EType;
   label: string;
 }
 
-export interface IBurgerIngredientsProps {
-  ingredients: TFilteredIngredients;
-  selected: IIngredient[];
-  setSelected: Dispatch<SetStateAction<IIngredient[]>>;
-}
+export type TTitleRefs = {
+  [key in EType]: Ref<HTMLDivElement>;
+};

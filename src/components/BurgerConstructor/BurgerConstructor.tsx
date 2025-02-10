@@ -1,32 +1,53 @@
 import styles from "./styles.module.css";
 import {
   Button,
-  ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-
 import { FC, useMemo, useState } from "react";
-import { IBurgerConstructorProps } from "./types.ts";
 import { Modal } from "../Modal";
 import { OrderDetails } from "./components/OrderDetails";
+import { useAppDispatch, useAppSelector } from "@/services/ducks/store.ts";
+import { burgerSlice } from "@/services/ducks/burger";
+import { postOrderNumber } from "@/services/ducks/order";
+import { useDrop } from "react-dnd";
+import { ListItem } from "@components/BurgerConstructor/components/ListItem";
 
-export const BurgerConstructor: FC<IBurgerConstructorProps> = ({
-  selected,
-  setSelected,
-}) => {
-  const price = useMemo(() => {
-    return selected.reduce((acc, item) => acc + item.price, 0);
-  }, [selected]);
+export const BurgerConstructor: FC = () => {
   const [isOpen, setOpen] = useState(false);
 
-  const handleDelete = (idx: number) => {
-    const newState = structuredClone(selected);
-    newState.splice(idx, 1);
-    setSelected(newState);
-  };
+  const {
+    burger,
+    ingredientsData: { rawIngredients },
+  } = useAppSelector((state) => ({
+    burger: state.burger,
+    ingredientsData: state.ingredients,
+  }));
+
+  const dispatch = useAppDispatch();
+  const { addIngredient } = burgerSlice.actions;
+
+  const price = useMemo(() => {
+    return burger.reduce((acc, item) => acc + item.price, 0);
+  }, [burger]);
+
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(itemId: { id: string }) {
+      const ingredient = rawIngredients.find((item) => item._id === itemId.id);
+      if (ingredient)
+        dispatch(
+          addIngredient({
+            item: ingredient,
+            sectionId: ingredient.type,
+          }),
+        );
+    },
+  });
 
   const handleManageOrder = () => {
+    const ingredients = burger.map((item) => item._id);
+    ingredients.pop();
+    dispatch(postOrderNumber(ingredients));
     setOpen(true);
   };
 
@@ -35,40 +56,13 @@ export const BurgerConstructor: FC<IBurgerConstructorProps> = ({
   };
 
   return (
-    <section className={styles.wrapper}>
+    <section className={styles.wrapper} ref={dropTarget}>
       <div className={styles.list}>
-        {selected.map((item, idx) => {
-          const { name, price, type, image_mobile } = item;
-          const isLocked = type === "bun";
-          const listType =
-            type === "bun" ? (idx === 0 ? "top" : "bottom") : undefined;
-          const text =
-            name +
-            " " +
-            (listType ? (listType === "top" ? "(верх)" : "(низ)") : "");
-          return (
-            <div className={styles.list_el}>
-              {listType ? (
-                <div className={styles.spacer} />
-              ) : (
-                <DragIcon type="primary" className={styles.dragIcon} />
-              )}
-              <ConstructorElement
-                key={name + idx}
-                text={text}
-                thumbnail={image_mobile}
-                price={price}
-                isLocked={isLocked}
-                type={listType}
-                handleClose={() => {
-                  handleDelete(idx);
-                }}
-              />
-            </div>
-          );
+        {burger.map((item, idx) => {
+          return <ListItem key={item.key} item={item} idx={idx} />;
         })}
       </div>
-      {!!selected.length && (
+      {!!burger.length && (
         <div className={styles.order}>
           <p className={"text text_type_main-large"}>{price}</p>
           <CurrencyIcon className={styles.icon} type="primary" />

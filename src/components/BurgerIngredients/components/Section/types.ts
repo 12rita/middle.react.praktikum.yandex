@@ -1,11 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
-import { IIngredient, TIngredientType } from "@api/getIngredients";
+import { EType, IIngredient } from "@/shared";
 
 export interface ISectionProps {
   items: IIngredient[];
   title: string;
-  sectionId: TIngredientType;
-  selected: IIngredient[];
-  setSelected: Dispatch<SetStateAction<IIngredient[]>>;
+  sectionId: EType;
   onClick: (item: IIngredient) => void;
 }
