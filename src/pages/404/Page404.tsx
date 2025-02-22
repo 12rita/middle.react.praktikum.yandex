@@ -2,7 +2,7 @@ import styles from "./styles.module.css";
 import plug from "../../assets/img.png";
 import cn from "clsx";
 import { Link } from "react-router-dom";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 export const Page404 = () => {
   return (

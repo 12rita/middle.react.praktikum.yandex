@@ -9,9 +9,9 @@ import { useAppDispatch, useAppSelector } from "@/services";
 
 import { Link, Navigate } from "react-router-dom";
 import cn from "clsx";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { ILoginData, login } from "@/services/ducks/user";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 export const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -30,7 +30,8 @@ export const Login = () => {
       setLoginData({ ...loginData, [type]: e.target.value });
     };
 
-  const handleLogin = () => {
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(login({ ...loginData }));
   };
 
@@ -40,20 +41,19 @@ export const Login = () => {
   return (
     <div className={styles.wrapper}>
       <p className="text text_type_main-medium">Вход</p>
-
-      <EmailInput value={loginData.email} onChange={handleSetValue("email")} />
-      <PasswordInput
-        value={loginData.password}
-        onChange={handleSetValue("password")}
-      />
-      <Button
-        htmlType="button"
-        type="primary"
-        size="medium"
-        onClick={handleLogin}
-      >
-        Войти
-      </Button>
+      <form onSubmit={handleLogin}>
+        <EmailInput
+          value={loginData.email}
+          onChange={handleSetValue("email")}
+        />
+        <PasswordInput
+          value={loginData.password}
+          onChange={handleSetValue("password")}
+        />
+        <Button htmlType="submit" type="primary" size="medium">
+          Войти
+        </Button>
+      </form>
       <p
         className={cn(
           styles.message,

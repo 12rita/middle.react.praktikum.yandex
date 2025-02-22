@@ -4,13 +4,14 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/services";
 import styles from "./styles.module.css";
 import { IUser } from "@/shared";
 import { NavLink, useNavigate } from "react-router-dom";
 import cn from "clsx";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
+
 import { logout, updateProfile } from "@/services/ducks/user";
 
 export const Profile = () => {
@@ -59,7 +60,8 @@ export const Profile = () => {
     );
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(
       updateProfile({
         email: profileData.email.value,
@@ -115,7 +117,7 @@ export const Profile = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={styles.inputs}>
+      <form className={styles.inputs} onSubmit={handleSaveChanges}>
         <Input
           disabled={!profileData.name.editable}
           placeholder="Имя"
@@ -138,12 +140,12 @@ export const Profile = () => {
         <Button
           type="primary"
           size="medium"
-          onClick={handleSaveChanges}
-          htmlType={"button"}
+          // onClick={handleSaveChanges}
+          htmlType="submit"
         >
           Сохранить
         </Button>
-      </div>
+      </form>
     </div>
   );
 };

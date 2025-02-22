@@ -2,7 +2,6 @@ import { IngredientDetails } from "@components/BurgerIngredients";
 import styles from "./styles.module.css";
 import { Modal } from "@components/Modal";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Layout } from "@components/Layout";
 
 export const Details = () => {
   const location = useLocation();
@@ -17,10 +16,8 @@ export const Details = () => {
       <IngredientDetails />
     </Modal>
   ) : (
-    <Layout>
-      <div className={styles.wrapper}>
-        <IngredientDetails />
-      </div>
-    </Layout>
+    <div className={styles.wrapper}>
+      <IngredientDetails />
+    </div>
   );
 };

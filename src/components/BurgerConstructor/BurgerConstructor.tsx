@@ -11,14 +11,19 @@ import { burgerSlice } from "@/services/ducks/burger";
 import { postOrderNumber } from "@/services/ducks/order";
 import { useDrop } from "react-dnd";
 import { ListItem } from "@components/BurgerConstructor/components/ListItem";
+import { useNavigate } from "react-router-dom";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 export const BurgerConstructor: FC = () => {
   const [isOpen, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const {
     burger,
     ingredientsData: { rawIngredients },
+    user: { isAuthenticated },
   } = useAppSelector((state) => ({
+    user: state.user,
     burger: state.burger,
     ingredientsData: state.ingredients,
   }));
@@ -45,6 +50,10 @@ export const BurgerConstructor: FC = () => {
   });
 
   const handleManageOrder = () => {
+    if (!isAuthenticated) {
+      navigate(PathsRoutes.LOGIN);
+      return;
+    }
     const ingredients = burger.map((item) => item._id);
     ingredients.pop();
     dispatch(postOrderNumber(ingredients));

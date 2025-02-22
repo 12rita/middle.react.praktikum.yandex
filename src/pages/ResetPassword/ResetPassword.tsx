@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/services";
 import { IPasswordSetData, passwordSet } from "@/services/ducks/password";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +9,8 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import cn from "clsx";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
+
 import { useToaster } from "@components/Toaster";
 
 export const ResetPassword = () => {
@@ -41,7 +42,8 @@ export const ResetPassword = () => {
       setResetData({ ...resetData, [type]: e.target.value });
     };
 
-  const handleSet = () => {
+  const handleSet = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(
       passwordSet({
         ...resetData,
@@ -59,7 +61,7 @@ export const ResetPassword = () => {
     return <Navigate to={PathsRoutes.LOGIN} replace />;
 
   return (
-    <div className={styles.wrapper}>
+    <form onSubmit={handleSet} className={styles.wrapper}>
       <p className="text text_type_main-medium">Восстановление пароля</p>
 
       <PasswordInput
@@ -73,10 +75,10 @@ export const ResetPassword = () => {
       />
 
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="medium"
-        onClick={handleSet}
+        // onClick={handleSet}
       >
         Восстановить
       </Button>
@@ -90,6 +92,6 @@ export const ResetPassword = () => {
       >
         Вспомнили пароль? <Link to={PathsRoutes.LOGIN}>Войти</Link>
       </p>
-    </div>
+    </form>
   );
 };

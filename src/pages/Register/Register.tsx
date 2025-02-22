@@ -9,10 +9,10 @@ import styles from "./styles.module.css";
 
 import { Link, Navigate } from "react-router-dom";
 import cn from "clsx";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/services";
 import { IRegisterData, register } from "@/services/ducks/user";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 export const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -31,7 +31,8 @@ export const Register = () => {
       setRegisterData({ ...registerData, [type]: e.target.value });
     };
 
-  const handleRegister = () => {
+  const handleRegister = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(register({ ...registerData }));
   };
 
@@ -39,7 +40,7 @@ export const Register = () => {
     return <Navigate to={PathsRoutes.CONSTRUCTOR} replace />;
 
   return (
-    <div className={styles.wrapper}>
+    <form onSubmit={handleRegister} className={styles.wrapper}>
       <p className="text text_type_main-medium">Регистрация</p>
       <Input
         placeholder="Имя"
@@ -55,10 +56,10 @@ export const Register = () => {
         onChange={handleSetValue("password")}
       />
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="medium"
-        onClick={handleRegister}
+        // onClick={handleRegister}
       >
         Зарегистрироваться
       </Button>
@@ -72,6 +73,6 @@ export const Register = () => {
       >
         Уже зарегистрированы? <Link to={PathsRoutes.LOGIN}>Войти</Link>
       </p>
-    </div>
+    </form>
   );
 };

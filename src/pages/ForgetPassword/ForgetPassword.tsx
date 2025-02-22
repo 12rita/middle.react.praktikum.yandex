@@ -8,10 +8,11 @@ import { useAppDispatch, useAppSelector } from "@/services";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import cn from "clsx";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { passwordReset } from "@/services/ducks/password";
-import { PathsRoutes } from "@/router";
+
 import { useToaster } from "@components/Toaster";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 export const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -37,8 +38,8 @@ export const ForgetPassword = () => {
     setEmail(e.target.value);
   };
 
-  const handleForget = () => {
-    console.log("click");
+  const handleForget = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     dispatch(
       passwordReset({
         email,
@@ -55,26 +56,17 @@ export const ForgetPassword = () => {
   if (user.isAuthenticated)
     return <Navigate to={PathsRoutes.CONSTRUCTOR} replace />;
 
-  // if (passwordResetState.success)
-  //   return (
-  //     <Navigate
-  //       to={PathsRoutes.RESET_PASSWORD}
-  //       replace
-  //       state={{ from: PathsRoutes.FORGET_PASSWORD }}
-  //     />
-  //   );
-
   return (
-    <div className={styles.wrapper}>
+    <form onSubmit={handleForget} className={styles.wrapper}>
       <p className="text text_type_main-medium">Восстановление пароля</p>
 
       <EmailInput value={email} onChange={handleSetValue} />
 
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="medium"
-        onClick={handleForget}
+        // onClick={handleForget}
       >
         Восстановить
       </Button>
@@ -88,6 +80,6 @@ export const ForgetPassword = () => {
       >
         Вспомнили пароль? <Link to={PathsRoutes.LOGIN}>Войти</Link>
       </p>
-    </div>
+    </form>
   );
 };
