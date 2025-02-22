@@ -8,3 +8,7 @@
 .title {
     margin: 40px 0 24px;
 }
+
+.link {
+    color: inherit;
+}

@@ -1,5 +1,4 @@
 import { EType } from "@/shared";
-import { Ref } from "react";
 
 export interface ITabs {
   id: EType;
@@ -7,5 +6,5 @@ export interface ITabs {
 }
 
 export type TTitleRefs = {
-  [key in EType]: Ref<HTMLDivElement>;
+  [key in EType]: HTMLDivElement;
 };

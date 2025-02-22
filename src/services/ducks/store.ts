@@ -9,12 +9,16 @@ import { reducer as burgerReducer } from "./burger";
 import { reducer as ingredientReducer } from "./ingredients";
 import { reducer as modalReducer } from "./modal";
 import { reducer as orderReducer } from "./order";
+import { reducer as userReducer } from "./user";
+import { reducer as passwordReducer } from "./password";
 
 export const rootReducer = combineReducers({
   burger: burgerReducer,
   ingredients: ingredientReducer,
   modal: modalReducer,
   order: orderReducer,
+  user: userReducer,
+  password: passwordReducer,
 });
 
 export const store = configureStore({

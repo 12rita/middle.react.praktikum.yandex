@@ -4,5 +4,5 @@ export interface ISectionProps {
   items: IIngredient[];
   title: string;
   sectionId: EType;
-  onClick: (item: IIngredient) => void;
+  sectionRef: (el: HTMLDivElement) => void;
 }

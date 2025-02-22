@@ -3,6 +3,7 @@ export enum METHODS {
   PUT = "PUT",
   POST = "POST",
   DELETE = "DELETE",
+  PATCH = "PATCH",
 }
 
 interface IError {
@@ -26,3 +27,15 @@ export type TRequest<T = object> = (
   options?: IOptions,
   timeout?: number,
 ) => Promise<T>;
+
+export interface ISuccessResponse<T = null> {
+  data?: T;
+  message?: string;
+  success: boolean;
+}
+
+export interface ITokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  success: boolean;
+}

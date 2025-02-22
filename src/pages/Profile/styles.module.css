@@ -1,0 +1,29 @@
+.inputs {
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+}
+
+.wrapper {
+   display: flex;
+   gap: 60px;
+   justify-content: center;
+   margin-top: 120px;
+}
+
+.tabs {
+  margin-left: -60px;
+  width: 320px;
+}
+
+.logout {
+   cursor: pointer;
+}
+
+.info {
+   margin-top: 80px;
+}
+
+.tab {
+   padding: 17px 0;
+}

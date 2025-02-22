@@ -1,1 +1,2 @@
-export {BurgerIngredients} from './BurgerIngredients.tsx'
+export { BurgerIngredients } from "./BurgerIngredients.tsx";
+export { IngredientDetails } from "./components";
