@@ -18,6 +18,7 @@ import {
 import { Page404 } from "@pages/404";
 import { Modal } from "@components/Modal";
 import { IngredientDetails } from "@components/BurgerIngredients";
+import { PathsRoutes } from "@/shared/routes.ts";
 
 function App() {
   const location = useLocation();
