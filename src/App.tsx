@@ -14,7 +14,7 @@ import {
   Register,
   ResetPassword,
 } from "@pages";
-
+import styles from "./styles.module.css";
 import { Page404 } from "@pages/404";
 import { Modal } from "@components/Modal";
 import { IngredientDetails } from "@components/BurgerIngredients";
@@ -43,13 +43,7 @@ function App() {
             path={PathsRoutes.INGREDIENTS}
             element={
               <ProtectedRouteElement>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "40px",
-                  }}
-                >
+                <div className={styles.wrapperIngredients}>
                   <IngredientDetails />
                 </div>
               </ProtectedRouteElement>
