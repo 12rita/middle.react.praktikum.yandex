@@ -6,7 +6,8 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
-import { PathsRoutes } from "@/router";
+import { PathsRoutes } from "@/shared/routes.ts";
+
 import { HeaderTab } from "./HeaderTab.tsx";
 
 export const AppHeader = () => {

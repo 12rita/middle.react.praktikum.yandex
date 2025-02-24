@@ -1,6 +1,6 @@
-import { IOptions, METHODS } from "./types.ts";
+import { IOptions, ITokenResponse, METHODS } from "./types.ts";
 import queryString from "query-string";
-import { BASE_URL } from "./routes.ts";
+import { BASE_URL, TOKEN } from "./routes.ts";
 
 export class Api {
   get<T = object>(
@@ -10,6 +10,15 @@ export class Api {
     return this.request<T>(url, {
       ...options,
       method: METHODS.GET,
+    });
+  }
+  patch<T = object>(
+    url: string,
+    options: IOptions = {},
+  ): Promise<T | { error: string }> {
+    return this.request<T>(url, {
+      ...options,
+      method: METHODS.PATCH,
     });
   }
 
@@ -38,6 +47,19 @@ export class Api {
     return this.request<T>(url, {
       ...options,
       method: METHODS.DELETE,
+    });
+  }
+
+  async refreshToken() {
+    return this.post<ITokenResponse>(TOKEN, {
+      data: { token: localStorage.getItem("refreshToken") },
+    }).then((refreshData) => {
+      if (!("success" in refreshData)) {
+        return Promise.reject(refreshData);
+      }
+      localStorage.setItem("refreshToken", refreshData.refreshToken);
+      localStorage.setItem("accessToken", refreshData.accessToken);
+      return refreshData;
     });
   }
 
@@ -81,7 +103,8 @@ export class Api {
           }
           return responseData;
         }
-        return Promise.reject(`Ошибка ${res.status}`);
+
+        return res.json().then((err) => Promise.reject(err));
       })
       .then((res) => {
         if (res && res.success) {
@@ -89,6 +112,21 @@ export class Api {
         }
         // не забываем выкидывать ошибку, чтобы она попала в `catch`
         return Promise.reject(`Ответ не success: ${res}`);
+      })
+      .catch(async (err) => {
+        if (err.message === "jwt expired") {
+          const refreshData = await this.refreshToken(); //обновляем токен
+
+          return this.request(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: refreshData.accessToken,
+            },
+          });
+        } else {
+          return Promise.reject(err);
+        }
       });
   }
 }

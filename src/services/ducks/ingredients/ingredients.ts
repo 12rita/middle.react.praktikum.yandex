@@ -1,10 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api, INGREDIENTS } from "@api";
-import {
-  IIngredientsResponse,
-  IIngredientState,
-  TFilteredIngredients,
-} from "./types.ts";
+import { api, INGREDIENTS, ISuccessResponse } from "@api";
+import { IIngredientState, TFilteredIngredients } from "./types.ts";
 import { IIngredient } from "@/shared";
 
 const initialState: IIngredientState = {
@@ -17,9 +13,9 @@ const initialState: IIngredientState = {
 export const fetchIngredients = createAsyncThunk(
   "ingredients/get",
   async () => {
-    const res = await api.get<IIngredientsResponse>(INGREDIENTS);
+    const res = await api.get<ISuccessResponse<IIngredient[]>>(INGREDIENTS);
 
-    return "data" in res ? res.data : res.error;
+    return "data" in res ? res.data : "Something went wrong";
   },
 );
 

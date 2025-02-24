@@ -14,3 +14,13 @@ export interface IIngredient {
   __v: number;
   _id: string;
 }
+
+export interface IUser {
+  email: string;
+  name: string;
+}
+
+export interface IInitialState {
+  loading: boolean;
+  error: string;
+}

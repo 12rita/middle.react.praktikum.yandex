@@ -1,15 +1,13 @@
-import { IIngredient, EType } from "@/shared";
+import { IIngredient, EType, IInitialState } from "@/shared";
 
 export type TFilteredIngredients = {
   [key in EType]: IIngredient[];
 };
 
 export type IIngredientState = {
-  loading: boolean;
-  error: string;
   ingredients: TFilteredIngredients;
   rawIngredients: IIngredient[];
-};
+} & IInitialState;
 
 export interface IIngredientsResponse {
   data: IIngredient[];
