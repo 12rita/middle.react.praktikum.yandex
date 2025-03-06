@@ -17,7 +17,7 @@ import { logout, updateProfile } from "@/services/ducks/user";
 export const Profile = () => {
   const tabs = [
     { value: PathsRoutes.PROFILE, title: "Профиль" },
-    { value: PathsRoutes.ORDERS, title: "История заказов" },
+    { value: PathsRoutes.FEED, title: "История заказов" },
     { value: "", title: "Выход" },
   ];
 

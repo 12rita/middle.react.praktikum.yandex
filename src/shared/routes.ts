@@ -1,7 +1,7 @@
 export enum PathsRoutes {
   CONSTRUCTOR = "/",
   PROFILE = "/profile",
-  ORDERS = "/orders",
+  FEED = "/feed",
   LOGIN = "/login",
   REGISTER = "/register",
   FORGET_PASSWORD = "/forget-password",

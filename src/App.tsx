@@ -86,7 +86,7 @@ function App() {
           />
 
           <Route
-            path={PathsRoutes.ORDERS}
+            path={PathsRoutes.FEED}
             element={
               <ProtectedRouteElement>
                 <Orders />

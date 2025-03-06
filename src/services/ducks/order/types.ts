@@ -14,3 +14,11 @@ export interface IInitialState {
   loading: boolean;
   error: string;
 }
+
+export interface IOrderContent {
+  id: string;
+  timestamp: string;
+  name: string;
+  ingredients: string[];
+  price: number;
+}

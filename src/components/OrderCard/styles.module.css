@@ -1,0 +1,14 @@
+.card {
+    background: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 584px;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+}
