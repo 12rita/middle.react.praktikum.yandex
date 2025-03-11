@@ -1,6 +1,6 @@
 export const orders = [
   {
-    id: "23B6EB0D-8114-D298-9671-2DABB86512B9",
+    id: "23B6EB0D",
     name: "Dacey Weeks",
     ingredients: [
       "643d69a5c3f7b9001cfa093f",
@@ -11,16 +11,18 @@ export const orders = [
     ],
     price: 554.97,
     timestamp: "Feb 26, 2026",
+    status: "ready",
   },
   {
-    id: "439B48C1-2310-D27E-253C-C9DA4873C1BF",
+    id: "439B48C1",
     name: "Mary Pierce",
     ingredients: ["643d69a5c3f7b9001cfa0945", "643d69a5c3f7b9001cfa0946"],
     price: 862.74,
     timestamp: "Jun 16, 2025",
+    status: "in progress",
   },
   {
-    id: "A18CD252-3767-B126-8D82-23884894B683",
+    id: "A18CD252",
     name: "Dawn Figueroa",
     ingredients: [
       "643d69a5c3f7b9001cfa093f",
@@ -30,9 +32,10 @@ export const orders = [
     ],
     price: 885.5,
     timestamp: "Aug 21, 2025",
+    status: "in progress",
   },
   {
-    id: "62B538A7-D9EE-A568-3379-E92E9AF82286",
+    id: "62B538A7",
     name: "Kelly Johnston",
     ingredients: [
       "643d69a5c3f7b9001cfa094a",
@@ -46,9 +49,10 @@ export const orders = [
     ],
     price: 344.44,
     timestamp: "Sep 1, 2024",
+    status: "ready",
   },
   {
-    id: "3EDD268E-C694-D2E8-DB66-BCDCF4B7AC50",
+    id: "3EDD268E",
     name: "Luke Higgins",
     ingredients: [
       "643d69a5c3f7b9001cfa0948",
@@ -63,10 +67,11 @@ export const orders = [
     ],
     price: 347.89,
     timestamp: "Jul 6, 2025",
+    status: "in progress",
   },
 ];
 
-const stats = {
+export const stats = {
   ready: [
     "23B6EB0D-8114-D298-9671-2DABB86512B9",
     "3EDD268E-C694-D2E8-DB66-BCDCF4B7AC50",

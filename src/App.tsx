@@ -9,16 +9,16 @@ import {
   Constructor,
   ForgetPassword,
   Login,
-  Orders,
-  Profile,
+  Feed,
   Register,
   ResetPassword,
 } from "@pages";
-import styles from "./styles.module.css";
 import { Page404 } from "@pages/404";
 import { Modal } from "@components/Modal";
 import { IngredientDetails } from "@components/BurgerIngredients";
-import { PathsRoutes } from "@/shared/routes.ts";
+import { PathsRoutes, ProfileRoutes } from "@/shared/routes.ts";
+import { OrderDetails } from "@components/OrderDetails";
+import { ProfileWrapper } from "@pages/Profile";
 
 function App() {
   const location = useLocation();
@@ -43,13 +43,26 @@ function App() {
             path={PathsRoutes.INGREDIENTS}
             element={
               <ProtectedRouteElement>
-                <div className={styles.wrapperIngredients}>
-                  <IngredientDetails />
-                </div>
+                <IngredientDetails />
               </ProtectedRouteElement>
             }
           />
-
+          <Route
+            path={PathsRoutes.ORDER}
+            element={
+              <ProtectedRouteElement>
+                <OrderDetails />
+              </ProtectedRouteElement>
+            }
+          />
+          <Route
+            path={PathsRoutes.PROFILE + ProfileRoutes.ORDER}
+            element={
+              <ProtectedRouteElement>
+                <OrderDetails />
+              </ProtectedRouteElement>
+            }
+          />
           <Route
             path={PathsRoutes.FORGET_PASSWORD}
             element={
@@ -89,15 +102,15 @@ function App() {
             path={PathsRoutes.FEED}
             element={
               <ProtectedRouteElement>
-                <Orders />
+                <Feed />
               </ProtectedRouteElement>
             }
           />
           <Route
-            path={PathsRoutes.PROFILE}
+            path={PathsRoutes.PROFILE + "/*"}
             element={
               <ProtectedRouteElement anonymous={false}>
-                <Profile />
+                <ProfileWrapper />
               </ProtectedRouteElement>
             }
           />

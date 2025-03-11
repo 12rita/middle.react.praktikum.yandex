@@ -21,4 +21,5 @@ export interface IOrderContent {
   name: string;
   ingredients: string[];
   price: number;
+  status: string;
 }

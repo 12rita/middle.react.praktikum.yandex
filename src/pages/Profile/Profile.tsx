@@ -8,25 +8,16 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/services";
 import styles from "./styles.module.css";
 import { IUser } from "@/shared";
-import { NavLink, useNavigate } from "react-router-dom";
-import cn from "clsx";
-import { PathsRoutes } from "@/shared/routes.ts";
 
-import { logout, updateProfile } from "@/services/ducks/user";
+import { updateProfile } from "@/services/ducks/user";
 
 export const Profile = () => {
-  const tabs = [
-    { value: PathsRoutes.PROFILE, title: "Профиль" },
-    { value: PathsRoutes.FEED, title: "История заказов" },
-    { value: "", title: "Выход" },
-  ];
-
   const {
     user: { user },
   } = useAppSelector((state) => ({
     user: state.user,
   }));
-  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
 
   const [profileData, setProfileData] = useState({
@@ -50,16 +41,6 @@ export const Profile = () => {
     });
   };
 
-  const handleLogout = () => {
-    dispatch(
-      logout({
-        onSuccess: () => {
-          navigate(PathsRoutes.LOGIN, { replace: true });
-        },
-      }),
-    );
-  };
-
   const handleSaveChanges = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
@@ -72,51 +53,51 @@ export const Profile = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.tabs}>
-        {tabs.map(({ value, title }) =>
-          value ? (
-            <NavLink to={value} key={title}>
-              {({ isActive }) => (
-                <p
-                  className={cn(
-                    "text",
-                    "text text_type_main-medium",
-                    isActive ? "text_color_primary " : "text_color_inactive",
-                    styles.tab,
-                  )}
-                >
-                  {title}
-                </p>
-              )}
-            </NavLink>
-          ) : (
-            <div
-              key={title}
-              onClick={handleLogout}
-              className={cn(
-                "text",
-                "text text_type_main-medium",
-                "text_color_inactive",
-                styles.logout,
-                styles.tab,
-              )}
-            >
-              {title}
-            </div>
-          ),
-        )}
-        <p
-          className={cn(
-            "text",
-            "text text_type_main-small",
-            "text_color_inactive",
-            styles.info,
-          )}
-        >
-          В этом разделе вы можете изменить свои персональные данные
-        </p>
-      </div>
+    <div>
+      {/*<div className={styles.tabs}>*/}
+      {/*  {tabs.map(({ value, title }) =>*/}
+      {/*    value ? (*/}
+      {/*      <NavLink to={value} key={title}>*/}
+      {/*        {({ isActive }) => (*/}
+      {/*          <p*/}
+      {/*            className={cn(*/}
+      {/*              "text",*/}
+      {/*              "text text_type_main-medium",*/}
+      {/*              isActive ? "text_color_primary " : "text_color_inactive",*/}
+      {/*              styles.tab,*/}
+      {/*            )}*/}
+      {/*          >*/}
+      {/*            {title}*/}
+      {/*          </p>*/}
+      {/*        )}*/}
+      {/*      </NavLink>*/}
+      {/*    ) : (*/}
+      {/*      <div*/}
+      {/*        key={title}*/}
+      {/*        onClick={handleLogout}*/}
+      {/*        className={cn(*/}
+      {/*          "text",*/}
+      {/*          "text text_type_main-medium",*/}
+      {/*          "text_color_inactive",*/}
+      {/*          styles.logout,*/}
+      {/*          styles.tab,*/}
+      {/*        )}*/}
+      {/*      >*/}
+      {/*        {title}*/}
+      {/*      </div>*/}
+      {/*    ),*/}
+      {/*  )}*/}
+      {/*  <p*/}
+      {/*    className={cn(*/}
+      {/*      "text",*/}
+      {/*      "text text_type_main-small",*/}
+      {/*      "text_color_inactive",*/}
+      {/*      styles.info,*/}
+      {/*    )}*/}
+      {/*  >*/}
+      {/*    В этом разделе вы можете изменить свои персональные данные*/}
+      {/*  </p>*/}
+      {/*</div>*/}
       <form className={styles.inputs} onSubmit={handleSaveChanges}>
         <Input
           disabled={!profileData.name.editable}
