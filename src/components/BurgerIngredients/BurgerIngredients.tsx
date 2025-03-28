@@ -28,6 +28,7 @@ export const BurgerIngredients: FC = () => {
   } = useAppSelector((state) => ({
     ingredientsData: state.ingredients,
   }));
+  // console.log({ ingredients });
 
   const { setError } = useToaster();
 

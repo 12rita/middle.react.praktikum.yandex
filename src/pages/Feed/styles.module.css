@@ -15,9 +15,19 @@
     gap: 60px;
 }
 
+.loaderWrapper {
+    min-width: 650px;
+}
+
 .statusBar {
     display: flex;
     gap: 36px;
+}
+
+.statusColumn {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 10px;
 }
 
 .title {

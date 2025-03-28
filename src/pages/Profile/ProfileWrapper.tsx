@@ -1,26 +1,84 @@
-import { useAppDispatch } from "@/services";
+import { useAppDispatch, useAppSelector } from "@/services";
 import styles from "./styles.module.css";
 
-import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import cn from "clsx";
 import { PathsRoutes, ProfileRoutes } from "@/shared/routes.ts";
 import { logout } from "@/services/ducks/user";
 import { OrdersFeed } from "@components/OrdersFeed";
 import { Profile } from "./Profile.tsx";
-import { orders } from "./mock.ts";
+
+import { useToaster } from "@components/Toaster";
+import { useCallback, useEffect, useState } from "react";
+import { WebsocketStatus } from "@/services/ducks/ws";
+import { connect, disconnect } from "@/services/ducks/feed";
+import { USER_FEED } from "@api";
+import { Loader } from "@components/Loader";
+
+const tabs = [
+  { value: PathsRoutes.PROFILE, title: "Профиль", end: true },
+  {
+    value: PathsRoutes.PROFILE + ProfileRoutes.FEED,
+    title: "История заказов",
+  },
+  { value: "", title: "Выход" },
+];
 
 export const ProfileWrapper = () => {
-  const tabs = [
-    { value: PathsRoutes.PROFILE, title: "Профиль", end: true },
-    {
-      value: PathsRoutes.PROFILE + ProfileRoutes.FEED,
-      title: "История заказов",
-    },
-    { value: "", title: "Выход" },
-  ];
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const isOrderTab = location.pathname.includes("orders");
+
+  const {
+    feed: { ordersFeed, error, status },
+    user: { isAuthenticated },
+  } = useAppSelector((state) => ({
+    feed: state.feed,
+    user: state.user,
+  }));
+  const [isConnected, setIsConnected] = useState(false);
+  const connectSocket = useCallback(
+    () => dispatch(connect({ url: USER_FEED, withToken: true })),
+    [dispatch],
+  );
+  const disconnectSocket = useCallback(
+    () => dispatch(disconnect()),
+    [dispatch],
+  );
+  const { setError } = useToaster();
+
+  useEffect(() => {
+    if (error) setError(error);
+  }, [error, setError]);
+
+  useEffect(() => {
+    if (status === WebsocketStatus.ERROR || !isAuthenticated) return;
+    if (status === WebsocketStatus.OFFLINE && isOrderTab && !isConnected) {
+      connectSocket();
+      setIsConnected(true);
+    }
+
+    return () => {
+      if (status === WebsocketStatus.ONLINE) {
+        disconnectSocket();
+        setIsConnected(false);
+      }
+    };
+  }, [
+    connectSocket,
+    disconnectSocket,
+    isAuthenticated,
+    isConnected,
+    isOrderTab,
+    status,
+  ]);
 
   const handleLogout = () => {
     dispatch(
@@ -78,17 +136,22 @@ export const ProfileWrapper = () => {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className="content">
+      <div className={styles.content}>
         <Routes>
           <Route
             path={ProfileRoutes.FEED}
             element={
-              <OrdersFeed
-                height={"calc(100vh - 88px - 120px)"}
-                orders={orders}
-              />
+              status === WebsocketStatus.CONNECTING ? (
+                <Loader />
+              ) : (
+                <OrdersFeed
+                  height={"calc(100vh - 88px - 120px)"}
+                  orders={ordersFeed.orders}
+                />
+              )
             }
           />
+
           <Route path="/" element={<Profile />} />
         </Routes>
       </div>

@@ -54,50 +54,6 @@ export const Profile = () => {
 
   return (
     <div>
-      {/*<div className={styles.tabs}>*/}
-      {/*  {tabs.map(({ value, title }) =>*/}
-      {/*    value ? (*/}
-      {/*      <NavLink to={value} key={title}>*/}
-      {/*        {({ isActive }) => (*/}
-      {/*          <p*/}
-      {/*            className={cn(*/}
-      {/*              "text",*/}
-      {/*              "text text_type_main-medium",*/}
-      {/*              isActive ? "text_color_primary " : "text_color_inactive",*/}
-      {/*              styles.tab,*/}
-      {/*            )}*/}
-      {/*          >*/}
-      {/*            {title}*/}
-      {/*          </p>*/}
-      {/*        )}*/}
-      {/*      </NavLink>*/}
-      {/*    ) : (*/}
-      {/*      <div*/}
-      {/*        key={title}*/}
-      {/*        onClick={handleLogout}*/}
-      {/*        className={cn(*/}
-      {/*          "text",*/}
-      {/*          "text text_type_main-medium",*/}
-      {/*          "text_color_inactive",*/}
-      {/*          styles.logout,*/}
-      {/*          styles.tab,*/}
-      {/*        )}*/}
-      {/*      >*/}
-      {/*        {title}*/}
-      {/*      </div>*/}
-      {/*    ),*/}
-      {/*  )}*/}
-      {/*  <p*/}
-      {/*    className={cn(*/}
-      {/*      "text",*/}
-      {/*      "text text_type_main-small",*/}
-      {/*      "text_color_inactive",*/}
-      {/*      styles.info,*/}
-      {/*    )}*/}
-      {/*  >*/}
-      {/*    В этом разделе вы можете изменить свои персональные данные*/}
-      {/*  </p>*/}
-      {/*</div>*/}
       <form className={styles.inputs} onSubmit={handleSaveChanges}>
         <Input
           disabled={!profileData.name.editable}
@@ -118,12 +74,7 @@ export const Profile = () => {
           onChange={handleSetValue("password")}
           icon="EditIcon"
         />
-        <Button
-          type="primary"
-          size="medium"
-          // onClick={handleSaveChanges}
-          htmlType="submit"
-        >
+        <Button type="primary" size="medium" htmlType="submit">
           Сохранить
         </Button>
       </form>

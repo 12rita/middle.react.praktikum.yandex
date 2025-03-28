@@ -126,6 +126,22 @@ function App() {
         {background && (
           <Routes>
             <Route
+              path={PathsRoutes.ORDER}
+              element={
+                <Modal onClose={handleModalClose}>
+                  <OrderDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path={PathsRoutes.PROFILE + ProfileRoutes.ORDER}
+              element={
+                <Modal onClose={handleModalClose}>
+                  <OrderDetails />
+                </Modal>
+              }
+            />
+            <Route
               path={PathsRoutes.INGREDIENTS}
               element={
                 <Modal onClose={handleModalClose}>

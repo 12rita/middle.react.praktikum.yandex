@@ -5,10 +5,10 @@ import { useToaster } from "@components/Toaster";
 import { fetchIngredients } from "@/services/ducks/ingredients";
 import { Loader } from "@components/Loader";
 import { OrderCard } from "@components/OrderCard";
-import { IOrderContent } from "@/services/ducks/order";
+import { IOrder } from "@/shared";
 
 interface IOrdersFeedProps {
-  orders: IOrderContent[];
+  orders: IOrder[];
   height?: string;
 }
 
@@ -38,7 +38,7 @@ export const OrdersFeed: FC<IOrdersFeedProps> = ({ orders, height }) => {
       {orders.map((order) => (
         <OrderCard
           order={order}
-          key={"order" + order.id}
+          key={"order" + order._id}
           rawIngredients={rawIngredients}
         />
       ))}

@@ -1,39 +1,69 @@
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import styles from "./styles.module.css";
 import cn from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { orders } from "./mock.ts";
+
 import { useAppDispatch, useAppSelector } from "@/services";
 import { useToaster } from "@components/Toaster";
 import { fetchIngredients } from "@/services/ducks/ingredients";
 import { Loader } from "@components/Loader";
+import { WebsocketStatus } from "@/services/ducks/ws";
+import { FEED } from "@api";
+import { connect, disconnect } from "@/services/ducks/feed";
 
 export const OrderDetails: FC = () => {
   const id = location.pathname.split("/").pop();
-  const order = orders.find((order) => order.id === id);
   const {
+    feed: { ordersFeed, error: feedError, status: feedStatus },
     ingredientsData: { loading, error, rawIngredients },
   } = useAppSelector((state) => ({
+    feed: state.feed,
     ingredientsData: state.ingredients,
   }));
 
+  const order = ordersFeed.orders.find(
+    (order) => order.number.toString() === id,
+  );
+
   const { setError } = useToaster();
 
-  useEffect(() => {
-    if (error) setError(error);
-  }, [error, setError]);
-
   const dispatch = useAppDispatch();
+
+  const connectSocket = useCallback(
+    () => dispatch(connect({ url: FEED })),
+    [dispatch],
+  );
+  const disconnectSocket = useCallback(
+    () => dispatch(disconnect()),
+    [dispatch],
+  );
+
+  useEffect(() => {
+    if (error || feedError) setError(error ?? feedError);
+  }, [error, feedError, setError]);
+
+  useEffect(() => {
+    if (!order && feedStatus === WebsocketStatus.OFFLINE) connectSocket();
+    return () => {
+      if (order && feedStatus === WebsocketStatus.ONLINE) disconnectSocket();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!rawIngredients.length) dispatch(fetchIngredients());
   }, [dispatch, rawIngredients]);
 
-  if (loading) return <Loader />;
+  if (loading || feedStatus === WebsocketStatus.CONNECTING) return <Loader />;
   if (!order) return null;
 
-  const { name, ingredients, timestamp, price, status } = order;
-  const statusName = status === "ready" ? "Выполнен" : "В работе";
+  const { name, ingredients, createdAt, status } = order;
+  const price = ingredients.reduce((acc, item) => {
+    const ingredientPrice =
+      rawIngredients.find((ingredient) => ingredient._id === item)?.price ?? 0;
+    return acc + ingredientPrice;
+  }, 0);
+  const statusName = status === "done" ? "Выполнен" : "В работе";
 
   return (
     <div className={styles.order}>
@@ -49,7 +79,7 @@ export const OrderDetails: FC = () => {
         </p>
 
         <div className={styles.ingredientsContainer}>
-          {ingredients.map((item) => {
+          {ingredients.map((item, idx) => {
             const ingredientData = rawIngredients.find(
               (ingredient) => ingredient._id === item,
             );
@@ -57,7 +87,10 @@ export const OrderDetails: FC = () => {
             const { image, name, price, type } = ingredientData;
             const quant = type === "bun" ? 2 : 1;
             return (
-              <div className={styles.item}>
+              <div
+                className={styles.item}
+                key={`ingredien-${ingredientData._id}-${idx}`}
+              >
                 <div className={styles.imageBorder} key={item}>
                   <img
                     height={64}
@@ -86,7 +119,7 @@ export const OrderDetails: FC = () => {
             "text_color_inactive",
           )}
         >
-          {timestamp}
+          {createdAt}
         </p>
         <div className={cn("text", "text_type_main-default", styles.price)}>
           {price} <CurrencyIcon type="primary" />

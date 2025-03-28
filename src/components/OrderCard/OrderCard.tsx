@@ -1,27 +1,36 @@
 import { FC } from "react";
 import styles from "./styles.module.css";
-import { IOrderContent } from "@/services/ducks/order";
 import cn from "clsx";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient } from "@/shared";
+import { IIngredient, IOrder } from "@/shared";
 import { Link, useLocation } from "react-router-dom";
 import { PathsRoutes, ProfileRoutes } from "@/shared/routes.ts";
 
 interface IOrderProps {
-  order: IOrderContent;
+  order: IOrder;
   rawIngredients: IIngredient[];
 }
 
 const IMAGE_SHIFT = 48;
 export const OrderCard: FC<IOrderProps> = ({ order, rawIngredients }) => {
-  const { id, name, ingredients, price, timestamp } = order;
+  const { number: id, name, ingredients, createdAt } = order;
   const location = useLocation();
   const pathLink = location.pathname.includes("profile")
     ? PathsRoutes.PROFILE + ProfileRoutes.FEED
     : PathsRoutes.FEED;
+  const price = ingredients.reduce((acc, item) => {
+    const ingredientPrice =
+      rawIngredients.find((ingredient) => ingredient._id === item)?.price ?? 0;
+    return acc + ingredientPrice;
+  }, 0);
 
   return (
-    <Link key={id} to={`${pathLink}/${id}`} className={styles.link}>
+    <Link
+      key={id}
+      to={`${pathLink}/${id}`}
+      className={styles.link}
+      state={{ background: location }}
+    >
       <div className={styles.card}>
         <div className={styles.meta}>
           <p className={cn("text", "text_type_digits-default")}>#{id}</p>
@@ -32,13 +41,13 @@ export const OrderCard: FC<IOrderProps> = ({ order, rawIngredients }) => {
               "text_color_inactive",
             )}
           >
-            {timestamp}
+            {createdAt}
           </p>
         </div>
         <div className={cn("text", "text_type_main-medium")}>{name}</div>
         <div className={styles.meta}>
           <div className={styles.ingredientsContainer}>
-            {ingredients.map((item, index) => {
+            {ingredients.slice(0, 9).map((item, index) => {
               const ingredientData = rawIngredients.find(
                 (ingredient) => ingredient._id === item,
               );
