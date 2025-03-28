@@ -1,8 +1,8 @@
 import { FC, useEffect } from "react";
 import styles from "./styles.module.css";
-import { useAppDispatch, useAppSelector } from "@/services";
+import { useAppSelector } from "@/services";
 import { useToaster } from "@components/Toaster";
-import { fetchIngredients } from "@/services/ducks/ingredients";
+
 import { Loader } from "@components/Loader";
 import { OrderCard } from "@components/OrderCard";
 import { IOrder } from "@/shared";
@@ -24,12 +24,6 @@ export const OrdersFeed: FC<IOrdersFeedProps> = ({ orders, height }) => {
   useEffect(() => {
     if (error) setError(error);
   }, [error, setError]);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!rawIngredients.length) dispatch(fetchIngredients());
-  }, [dispatch, rawIngredients]);
 
   if (loading) return <Loader />;
 

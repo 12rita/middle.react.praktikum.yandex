@@ -33,6 +33,7 @@ export const feedSlice = createSlice({
       })
       .addCase(onClose, (state) => {
         state.status = WebsocketStatus.OFFLINE;
+        state.ordersFeed = initialFeed;
       })
       .addCase(onError, (state, action) => {
         state.error = action.payload;

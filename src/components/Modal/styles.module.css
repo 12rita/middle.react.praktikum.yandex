@@ -5,7 +5,7 @@
     box-shadow: 0 24px 32px 0 #0000000A;
     position: relative;
     z-index: 101;
-    width: 80%;
+    max-width: 80%;
 }
 
 .close {

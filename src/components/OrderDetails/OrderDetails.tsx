@@ -5,14 +5,17 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 
 import { useAppDispatch, useAppSelector } from "@/services";
 import { useToaster } from "@components/Toaster";
-import { fetchIngredients } from "@/services/ducks/ingredients";
 import { Loader } from "@components/Loader";
 import { WebsocketStatus } from "@/services/ducks/ws";
-import { FEED } from "@api";
+import { FEED, USER_FEED } from "@api";
 import { connect, disconnect } from "@/services/ducks/feed";
+import { useLocation } from "react-router-dom";
 
 export const OrderDetails: FC = () => {
+  const location = useLocation();
+  const isProfile = location.pathname.includes("profile");
   const id = location.pathname.split("/").pop();
+
   const {
     feed: { ordersFeed, error: feedError, status: feedStatus },
     ingredientsData: { loading, error, rawIngredients },
@@ -30,7 +33,10 @@ export const OrderDetails: FC = () => {
   const dispatch = useAppDispatch();
 
   const connectSocket = useCallback(
-    () => dispatch(connect({ url: FEED })),
+    () =>
+      dispatch(
+        connect({ url: isProfile ? USER_FEED : FEED, withToken: isProfile }),
+      ),
     [dispatch],
   );
   const disconnectSocket = useCallback(
@@ -43,16 +49,15 @@ export const OrderDetails: FC = () => {
   }, [error, feedError, setError]);
 
   useEffect(() => {
-    if (!order && feedStatus === WebsocketStatus.OFFLINE) connectSocket();
+    if (order) return;
+    if (!order && feedStatus === WebsocketStatus.OFFLINE) {
+      connectSocket();
+    }
     return () => {
       if (order && feedStatus === WebsocketStatus.ONLINE) disconnectSocket();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!rawIngredients.length) dispatch(fetchIngredients());
-  }, [dispatch, rawIngredients]);
 
   if (loading || feedStatus === WebsocketStatus.CONNECTING) return <Loader />;
   if (!order) return null;
@@ -89,7 +94,7 @@ export const OrderDetails: FC = () => {
             return (
               <div
                 className={styles.item}
-                key={`ingredien-${ingredientData._id}-${idx}`}
+                key={`ingredient-${ingredientData._id}-${idx}`}
               >
                 <div className={styles.imageBorder} key={item}>
                   <img
