@@ -4,9 +4,8 @@ import { Section } from "./components";
 import styles from "./styles.module.css";
 import { ITabs, TTitleRefs } from "./types.ts";
 
-import { useAppDispatch, useAppSelector } from "@/services";
+import { useAppSelector } from "@/services";
 
-import { fetchIngredients } from "@/services/ducks/ingredients";
 import { Loader } from "@components/Loader";
 import { useToaster } from "@components/Toaster";
 import { EType } from "@/shared";
@@ -34,12 +33,6 @@ export const BurgerIngredients: FC = () => {
   useEffect(() => {
     if (error) setError(error);
   }, [error, setError]);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
 
   const handleTabClick = (id: EType) => {
     if (!titleRefs.current[id]) return;

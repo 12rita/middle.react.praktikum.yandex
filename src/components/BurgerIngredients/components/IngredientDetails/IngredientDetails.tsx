@@ -1,13 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import styles from "./styles.module.css";
 import cn from "clsx";
 
 import { TCategoryOrder } from "./types.ts";
-import { useAppDispatch, useAppSelector } from "@/services";
-import { fetchIngredients } from "@/services/ducks/ingredients";
+import { useAppSelector } from "@/services";
+
 import { useLocation } from "react-router-dom";
 import { useToaster } from "@components/Toaster";
-import { IIngredient } from "@/shared";
+
 import { Loader } from "@components/Loader";
 
 const categoryOrder: TCategoryOrder[] = [
@@ -30,20 +30,7 @@ export const IngredientDetails: FC = () => {
     if (error) setError(error);
   }, [error, setError]);
 
-  const [item, setItem] = useState({} as IIngredient);
   const location = useLocation();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (!rawIngredients.length) {
-      dispatch(fetchIngredients());
-    } else {
-      const id = location.pathname.split("/").pop();
-      const ingredient = rawIngredients.find((item) => item._id === id);
-
-      if (ingredient) setItem(ingredient);
-    }
-  }, [dispatch, location.pathname, rawIngredients]);
 
   if (loading)
     return (
@@ -52,9 +39,14 @@ export const IngredientDetails: FC = () => {
       </div>
     );
 
-  if (error || (!loading && !item)) return null;
+  const id = location.pathname.split("/").pop();
+  const ingredient = rawIngredients.find((item) => item._id === id);
 
-  const { image_large, name } = item;
+  if (!ingredient) return null;
+
+  if (error) return null;
+
+  const { image_large, name } = ingredient;
   return (
     <div className={styles.modal}>
       <p className={cn("text", "text_type_main-large", styles.title)}>
@@ -74,7 +66,7 @@ export const IngredientDetails: FC = () => {
         {categoryOrder.map(({ id, unit, title }) => (
           <div className={styles.category} key={id}>
             <p>{title + "," + unit}</p>
-            <p>{item[id]}</p>
+            <p>{ingredient[id]}</p>
           </div>
         ))}
       </div>

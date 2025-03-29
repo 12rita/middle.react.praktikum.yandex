@@ -1,0 +1,49 @@
+.card {
+    background: rgba(28, 28, 33, 1);
+    border-radius: 40px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 584px;
+    cursor: pointer;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ingredientsContainer {
+    position: relative;
+    width: calc(100% - 48px - 24px);
+    height: 64px;
+}
+
+
+.imageBorder {
+    background: linear-gradient(rgba(28, 28, 33, 1), rgba(28, 28, 33, 1)) padding-box, /*this is your grey background*/ linear-gradient(to right, rgba(128, 26, 178, 1), rgba(76, 76, 255, 1));
+    border: 2px solid transparent;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+
+}
+
+.image {
+    object-fit: cover;
+}
+
+.link {
+    color: inherit;
+}

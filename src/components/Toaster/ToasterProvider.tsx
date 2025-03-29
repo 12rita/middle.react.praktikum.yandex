@@ -7,20 +7,27 @@ export const ToasterContext = createContext<IToasterContext>(
 );
 
 export const ToasterProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
-    if (error) {
-      console.log({ error });
+    if (errors.length) {
       setTimeout(() => {
-        setError("");
+        setErrors((prev) => {
+          const newState = [...prev];
+          newState.shift();
+          return newState;
+        });
       }, 3000);
     }
-  }, [error]);
+  }, [errors.length]);
+
+  const handleSetError = (error: string) => {
+    setErrors([...errors, error]);
+  };
 
   return (
-    <ToasterContext.Provider value={{ error, setError }}>
-      <Toaster error={error} />
+    <ToasterContext.Provider value={{ setError: handleSetError }}>
+      <Toaster errors={errors} />
       {children}
     </ToasterContext.Provider>
   );
