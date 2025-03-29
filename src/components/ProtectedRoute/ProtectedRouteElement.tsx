@@ -27,6 +27,7 @@ export const ProtectedRouteElement = ({
 
   const init = useCallback(async () => {
     await dispatch(profile());
+    setLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
@@ -42,8 +43,11 @@ export const ProtectedRouteElement = ({
     if (!isAuthenticated && !anonymous) {
       void init();
     }
-  }, [init, isAuthenticated]);
+  }, [anonymous, init, isAuthenticated]);
 
+  if (anonymous === undefined) {
+    return <Layout>{children}</Layout>;
+  }
   if (loading) {
     return <Loader />;
   }
@@ -52,7 +56,7 @@ export const ProtectedRouteElement = ({
     return <Navigate to={from} />;
   }
 
-  if (anonymous !== undefined && !anonymous && !isAuthenticated && !loading) {
+  if (!anonymous && !isAuthenticated && !loading) {
     return <Navigate to={PathsRoutes.LOGIN} state={{ from: location }} />;
   }
   return <Layout>{children}</Layout>;
