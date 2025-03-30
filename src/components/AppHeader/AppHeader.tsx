@@ -14,7 +14,7 @@ export const AppHeader = () => {
   const tabs = [
     { id: PathsRoutes.CONSTRUCTOR, label: "Конструктор", icon: BurgerIcon },
     {
-      id: PathsRoutes.ORDERS,
+      id: PathsRoutes.FEED,
       label: "Лента заказов",
       icon: ListIcon,
     },

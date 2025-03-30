@@ -11,3 +11,6 @@ export const USER = AUTH_BASE + "/user";
 export const ORDER = "/orders";
 export const PASSWORD_RESET = "/password-reset";
 export const RESET = PASSWORD_RESET + "/reset";
+
+export const USER_FEED = "wss://norma.nomoreparties.space/orders";
+export const FEED = USER_FEED + "/all";

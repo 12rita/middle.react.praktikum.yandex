@@ -27,3 +27,7 @@
 .tab {
    padding: 17px 0;
 }
+
+.content {
+   min-width: 480px;
+}

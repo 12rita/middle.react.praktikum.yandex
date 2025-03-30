@@ -41,7 +41,7 @@ export const Login = () => {
   return (
     <div className={styles.wrapper}>
       <p className="text text_type_main-medium">Вход</p>
-      <form onSubmit={handleLogin}>
+      <form className={styles.form} onSubmit={handleLogin}>
         <EmailInput
           value={loginData.email}
           onChange={handleSetValue("email")}

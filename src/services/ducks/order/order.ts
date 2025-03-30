@@ -14,6 +14,10 @@ export const postOrderNumber = createAsyncThunk(
   async (ids: string[]) => {
     return await api.post<IOrdersResponse>(ORDER, {
       data: { ingredients: ids },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("accessToken") ?? "",
+      },
     });
   },
 );
