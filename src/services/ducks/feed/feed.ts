@@ -7,12 +7,12 @@ import {
   onError,
   onMessage,
   onOpen,
-} from "@/services/ducks/feed/types.ts";
-import { WebsocketStatus } from "@/services/ducks/ws";
+} from "./types.ts";
+import { WebsocketStatus } from "../ws";
 
 const initialFeed = { orders: [], total: 0, totalToday: 0 };
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   status: WebsocketStatus.OFFLINE,
   ordersFeed: initialFeed,
   error: null,

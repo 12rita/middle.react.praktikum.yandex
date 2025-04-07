@@ -3,7 +3,7 @@ import { api, INGREDIENTS, ISuccessResponse } from "@api";
 import { IIngredientState, TFilteredIngredients } from "./types.ts";
 import { IIngredient } from "@/shared";
 
-const initialState: IIngredientState = {
+export const initialState: IIngredientState = {
   loading: false,
   error: "",
   ingredients: {} as TFilteredIngredients,
@@ -35,6 +35,7 @@ export const ingredientSlice = createSlice({
       const main = (action.payload as IIngredient[]).filter(
         (item) => item.type === "main",
       );
+      state.error = "";
       state.rawIngredients = action.payload as IIngredient[];
       state.ingredients = { bun, sauce, main };
     });

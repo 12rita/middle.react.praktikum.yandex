@@ -7,7 +7,7 @@ import {
 } from "./types.ts";
 import { IInitialState } from "@/shared";
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   loading: false,
   error: "",
 };

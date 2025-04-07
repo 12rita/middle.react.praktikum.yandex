@@ -65,7 +65,11 @@ export const BurgerConstructor: FC = () => {
   };
 
   return (
-    <section className={styles.wrapper} ref={dropTarget}>
+    <section
+      className={styles.wrapper}
+      ref={dropTarget}
+      data-qa="drop-container"
+    >
       <div className={styles.list}>
         {burger.map((item, idx) => {
           return <ListItem key={item.key} item={item} idx={idx} />;
@@ -75,7 +79,12 @@ export const BurgerConstructor: FC = () => {
         <div className={styles.order}>
           <p className={"text text_type_main-large"}>{price}</p>
           <CurrencyIcon className={styles.icon} type="primary" />
-          <Button htmlType="button" size="large" onClick={handleManageOrder}>
+          <Button
+            data-qa="button-makeOrder"
+            htmlType="button"
+            size="large"
+            onClick={handleManageOrder}
+          >
             Оформить заказ
           </Button>
         </div>
