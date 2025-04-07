@@ -1,6 +1,6 @@
 # Учебеный проект "Stellar burgers"
 
-
+Проект хостится на [https://stellarburger.nomorepartiessbs.ru/](https://stellarburger.nomorepartiessbs.ru/)
 В данном модуле разрабатывается проект - страница интернет-бургерной, при использовании React, Typescript, CSS и API браузера.
 В качестве state-менеджера использован Redux и Redux-Thunk
 
