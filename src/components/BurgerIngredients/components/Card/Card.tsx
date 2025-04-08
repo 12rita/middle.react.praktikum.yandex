@@ -17,7 +17,7 @@ export const Card: FC<ICardProps> = ({ item, counter }) => {
   const { name, image, price } = item;
 
   return (
-    <div className={styles.card} ref={dragRef}>
+    <div className={styles.card} ref={dragRef} data-qa={`card-${item._id}`}>
       {!!counter && <Counter count={counter} />}
       <img alt={name} src={image} />
       <div className={cn(styles.price, "text_type_digits-default", "text")}>

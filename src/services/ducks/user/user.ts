@@ -9,7 +9,7 @@ import {
 } from "./types.ts";
 import { IUser } from "@/shared";
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   loading: false,
   error: "",
   user: {} as IUser,

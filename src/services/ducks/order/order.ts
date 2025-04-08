@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api, ORDER } from "@api";
 import { IInitialState, IOrder, IOrdersResponse } from "./types.ts";
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   name: "",
   order: {} as IOrder,
   loading: false,
@@ -29,6 +29,7 @@ export const orderSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(postOrderNumber.fulfilled, (state, action) => {
       state.loading = false;
+      state.error = "";
       const { name, order } = action.payload as IOrdersResponse;
       state.order = order;
       state.name = name;
