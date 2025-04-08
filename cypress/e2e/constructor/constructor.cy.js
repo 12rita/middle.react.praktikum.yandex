@@ -9,7 +9,7 @@ describe("service is available", function () {
     cy.intercept("POST", "api/orders", { fixture: "order.json" });
     cy.intercept("GET", "api/ingredients", { fixture: "ingredients.json" });
 
-    cy.visit("http://localhost:5173");
+    cy.visit("/");
 
     window.localStorage.setItem("refreshToken", "test-refreshToken");
     cy.setCookie("accessToken", "test-accessToken");
